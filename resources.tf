@@ -108,7 +108,7 @@ resource "aws_instance" "web_instance" {
   #!/bin/bash
 
   sudo apt-get install nginx -y
-  echo "<h1>$(curl https://api.kanye.rest/?format=text)</h1>" >  /usr/share/nginx/html/index.html 
+  echo "<h1>$(curl https://api.kanye.rest/?format=text)</h1>" >  /var/www/html/index.html
   systemctl enable nginx
   systemctl start nginx
   EOF
