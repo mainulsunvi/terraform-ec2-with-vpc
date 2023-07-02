@@ -1,17 +1,17 @@
 resource "aws_vpc" "my_custom_vpc" {
-	cidr_block = "10.0.0.0/16"
-	tags = {
-		Name = "My Custom VPC"
-	}
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "My Custom VPC"
+  }
 }
 
 resource "aws_subnet" "my_public_subnet" {
-	vpc_id = aws_vpc.my_custom_vpc.id
-	cidr_block = "10.0.1.0/24"
-	availability_zone = "${var.var_aws_az}a"
-	tags = {
-		Name = "My Public Subnet"
-	}
+  vpc_id            = aws_vpc.my_custom_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "${var.var_aws_az}a"
+  tags = {
+    Name = "My Public Subnet"
+  }
 }
 
 resource "aws_subnet" "some_private_subnet" {
@@ -25,7 +25,7 @@ resource "aws_subnet" "some_private_subnet" {
 }
 
 resource "aws_internet_gateway" "my_internet_getway" {
-	vpc_id = aws_vpc.my_custom_vpc.id
+  vpc_id = aws_vpc.my_custom_vpc.id
 
   tags = {
     Name = "My Internet Gateway"
@@ -67,6 +67,14 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
+    description = "Allow 443 Traffic from the Internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -79,6 +87,10 @@ resource "aws_security_group" "web_sg" {
     protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "web_server_inbound"
+  }
 }
 
 resource "aws_instance" "web_instance" {
@@ -90,7 +102,7 @@ resource "aws_instance" "web_instance" {
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = true
 
-	 user_data = <<-EOF
+  user_data = <<-EOF
   #!/bin/bash
 
   sudo apt-get install nginx -y
@@ -105,5 +117,5 @@ resource "aws_instance" "web_instance" {
 }
 
 output "aws_public_ip" {
-	value = aws_instance.web_instance.public_ip
+  value = aws_instance.web_instance.public_ip
 }
