@@ -114,7 +114,7 @@ resource "aws_instance" "web_instance" {
   EOF
 
   tags = {
-    "Name" : "Kanye"
+    "Name" : "Terraform Instance"
   }
 }
 
