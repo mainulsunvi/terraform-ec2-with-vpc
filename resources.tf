@@ -60,6 +60,7 @@ resource "aws_security_group" "web_sg" {
   vpc_id = aws_vpc.my_custom_vpc.id
 
   ingress {
+    description = "Allow HTTP/Port 80 Traffic From the Internet"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -67,7 +68,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
-    description = "Allow 443 Traffic from the Internet"
+    description = "Allow HTTPS/Port 443 Traffic from the Internet"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -75,6 +76,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
+    description = "Allow SSH Traffic form the Internet"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
